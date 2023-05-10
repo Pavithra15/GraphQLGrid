@@ -31,6 +31,8 @@ var data = new ej.data.DataManager({
 });
 ```
 
+Also we have enabled enabled the Paging, Filtering, Sorting and Grouping features in Grid component and while sending data fetching request, the query parameters will be send in a string format which contains the RequiresCounts, Skip, Take, Sorted, Where, Group details.
+
 ### Performing CRUD operations
 
 You can perform the CRUD actions by returning the mutation queries inside the getMutation method based on the action.
@@ -141,6 +143,14 @@ const resolvers = {
 
 export default resolvers;
 
+```
+In the above resolver, we have used the `processData` method of `DataUtil` library which will process the data with the given datamanager information.
+
+```
+ getOrders: (parent, { datamanager }, context, info) => {     
+     var ret = DataUtil.processData(datamanager, filterData);
+     return ret;
+    }
 ```
 
 ## Run the GraphQL Server
