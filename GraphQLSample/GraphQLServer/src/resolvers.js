@@ -1,4 +1,4 @@
-import { filterData,  dataSource } from "./db";
+import { OrderData,  dataSource } from "./db";
 import { DataUtil } from "@syncfusion/ej2-data";
 dataSource();
 
@@ -6,7 +6,7 @@ DataUtil.serverTimezoneOffset = 0;
 const resolvers = {
   Query: {
     getOrders: (parent, { datamanager }, context, info) => {     
-     var ret = DataUtil.processData(datamanager, filterData);
+     var ret = DataUtil.processData(datamanager, OrderData);
      return ret;
     }
   },
@@ -15,12 +15,12 @@ const resolvers = {
 
     createOrder: (parent, { value }, context, info) => {
       const newOrder = value;
-      filterData.push(newOrder);
+      OrderData.push(newOrder);
       return newOrder;
 
     },
     updateOrder: (parent, { key, keyColumn, value }, context, info) => {
-      let newOrder = filterData.find(order => order.OrderID === parseInt(key));
+      let newOrder = OrderData.find(order => order.OrderID === parseInt(key));
       newOrder.CustomerID = value.CustomerID;
       newOrder.EmployeeID = value.EmployeeID;
       newOrder.ShipCity = value.ShipCity;
@@ -28,10 +28,10 @@ const resolvers = {
       return newOrder;
     },
     deleteOrder: (parent, { key, keyColumn, value }, context, info) => {
-      const orderIndex = filterData.findIndex(order => order.OrderID === parseInt(key));
+      const orderIndex = OrderData.findIndex(order => order.OrderID === parseInt(key));
       if (orderIndex === -1) throw new Error("Order not found." + value);
 
-      const deletedOrders = filterData.splice(orderIndex, 1);
+      const deletedOrders = OrderData.splice(orderIndex, 1);
 
       return deletedOrders[0];
     }
