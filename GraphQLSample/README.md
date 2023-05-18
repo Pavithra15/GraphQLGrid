@@ -1,21 +1,21 @@
-# Syncfusion JavaScript Components
+# Syncfusion React Components
 
-This project is a skeleton application used to create [Syncfusion JavaScript Components](https://www.syncfusion.com/javascript-ui-controls) web application.
+This project is a skeleton application used to create [Syncfusion React Components](https://www.syncfusion.com/react-components) web application.
 
 
 
 ## Add Syncfusion Grid component in your application
 
-Refer the following UG documenation for adding Syncfusion JavaScript component in your application
-* [Getting Started of Syncfusion JavaScript Data Grid component](https://ej2.syncfusion.com/javascript/documentation/grid/getting-started/)
+Refer the following UG documenation for adding Syncfusion React component in your application
+* [Getting Started of Syncfusion React Data Grid component](https://helpej2.syncfusion.com/react/documentation/grid/getting-started)
 
 ### Data Fetching
 
 In the sample, we have added the `GraphQLAdaptor` which provides option to retrieve data from the GraphQL server. You can comunicate with the GraphQL server by adding the `query` property and define the response format using the `response.result` and `response.count` properties.
 
 ```
-const data = new ej.data.DataManager({
-    adaptor: new ej.data.GraphQLAdaptor({
+const data = new DataManager({
+    adaptor: new GraphQLAdaptor({
       query: `query getOrders($datamanager: DataManager) {
               getOrders(datamanager: $datamanager) {
                  count,
@@ -31,11 +31,14 @@ const data = new ej.data.DataManager({
 });
 ```
 
-We can add the above `data` to the Grid `dataSource` property.
+
+Now the above `data` is added to the Grid `dataSource` property.
+
 
 ```
  <GridComponent dataSource={data} allowPaging={true} allowFiltering={true} allowSorting={true} allowGrouping={true}
-       editSettings={{allowAdding:true, allowEditing:true, allowdeleting:true}} toolbar={["Add", "Edit", "Delete", "Update", "Cancel"]}>
+       editSettings={{allowAdding:true, allowEditing:true, allowdeleting:true}}
+       toolbar={["Add", "Edit", "Delete", "Update", "Cancel"]}>
       <ColumnsDirective>
         <ColumnDirective field='OrderID' headerText="Order ID" isPrimaryKey={true} width='100' textAlign="Right" />
         <ColumnDirective field='CustomerID' headerText="Customer ID" width='100' />
@@ -46,11 +49,13 @@ We can add the above `data` to the Grid `dataSource` property.
   </GridComponent>
 ```
 
-Also, we have enabled enabled the Paging, Filtering, Sorting and Grouping features in Grid component and while sending data fetching request, the query parameters requiresCounts, skip, take, sorted, where and group details will be sent with the `variables`.
+
+Also, we have enabled the Paging, Filtering, Sorting and Grouping features in Grid component and while sending data fetching request, the query parameters requiresCounts, skip, take, sorted and where details will be sent with the `variables`.
 
 ![image](https://github.com/Pavithra15/GraphQLGrid/assets/34119270/6c6b4e69-eaa2-4c23-83be-530eba8f1bdd)
 
 This is the Schema for the parameters in GraphQL server.
+
 
 ```
 input DataManager {
@@ -62,8 +67,14 @@ input DataManager {
     requiresCounts: Boolean,
 }
 ```
+```
+input Sort {
+    name: String!
+    direction: String!
+}
+```
 
-And you can get these values in resolver, process the data and return teh response as `result` and `count` pair.
+And you can get these values in resolver method 'getOrders', process the data and return the response as `result` and `count` pair.
 
 ```
 Query: {
@@ -208,7 +219,7 @@ const resolvers = {
 export default resolvers;
 
 ```
-In the above resolver, we have used the `processData` method of `DataUtil` library which will process the data with the given datamanager information.
+In the sample, we have used the `processData` method of `DataUtil` library which will process the data with the given datamanager information.
 
 ```
  getOrders: (parent, { datamanager }, context, info) => {     
@@ -235,7 +246,7 @@ Now the server will be hosted in the url `http://localhost:4200/` and we can com
 
 ## Resources
 
-You can also refer the below resources to know more details about Syncfusion JavaScript Data Grid components.
-* [Demo](https://ej2.syncfusion.com/javascript/demos/#/material/grid/grid-overview.html)
-* [Documentation](https://ej2.syncfusion.com/javascript/documentation/grid/)
-* [GraphQL with Syncfusion DataManager](https://ej2.syncfusion.com/javascript/documentation/data/adaptors/#graphql-adaptor)
+You can also refer the below resources to know more details about Syncfusion React Data Grid components.
+* [Demo](https://ej2.syncfusion.com/react/demos/#/material/grid/grid-overview.html)
+* [Documentation](https://ej2.syncfusion.com/react/documentation/grid/)
+* [GraphQL with Syncfusion DataManager](https://ej2.syncfusion.com/react/documentation/data/adaptors#graphql-adaptor)
