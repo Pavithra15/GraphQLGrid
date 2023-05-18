@@ -155,9 +155,19 @@ In the above resolver, we have used the `processData` method of `DataUtil` libra
 
 ## Run the GraphQL Server
 
+To run the server, you need to install the required pacakges using the below command
+
+```
+npm install
+```
+
+and run using the below command.
+
 ```
 npm run dev
 ```
+
+Now the server will be hosted in the url `http://localhost:4200/` and we can communicate the GraphQL by assigning this url to the `dataManager.url` property.
 
 ## Run the client Data Grid application
 
@@ -188,7 +198,7 @@ Query: {
       if (datamanager.skip && datamanager.take) {
         // Perform Paging
       }
-      return { OrderData: data, OrderCount: data.length };
+      return { result: data, count: data.length };
     }
   }
 ```
