@@ -161,7 +161,7 @@ To run the server, you need to install the required pacakges using the below com
 npm install
 ```
 
-and run using the below command.
+and run using
 
 ```
 npm run dev
