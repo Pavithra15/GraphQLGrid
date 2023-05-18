@@ -3,7 +3,7 @@ export let users = [
     { id: 2, name: "Jane Doe", email: "jane@gmail.com", age: 23 }
   ];
 
-  export let filterData = [
+  export let OrderData = [
     {
         OrderID: 10248, CustomerID: 'VINET', EmployeeID: 5, OrderDate: new Date("07 12 1996 02:00:23"),
         ShipName: 'Vins et alcools Chevalier', ShipCity: 'Reims', ShipAddress: '59 rue de l Abbaye',
