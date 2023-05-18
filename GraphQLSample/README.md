@@ -163,6 +163,36 @@ npm run dev
 
 Run the client side application by launcing the index.html file in your browser.
 
+## Behavior of Grid actions
+
+### Pagination
+
+While paging action, the skip and take values will be sent with the `variables` as number.
+
+![image](https://github.com/Pavithra15/GraphQLGrid/assets/34119270/2fa5459f-6593-4ac6-93c6-1ab68d4a6fbd)
+
+This is the Schema for skip and take parameters in GraphQL server.
+
+```
+input DataManager {
+    skip: Int
+    take: Int
+}
+```
+
+And you can get these values and process the data.
+
+```
+Query: {
+    getOrders: (parent, { datamanager }, context, info) => {     
+      if (datamanager.skip && datamanager.take) {
+        // Perform Paging
+      }
+      return { OrderData: data, OrderCount: data.length };
+    }
+  }
+```
+
 ## Resources
 
 You can also refer the below resources to know more details about Syncfusion JavaScript Data Grid components.
