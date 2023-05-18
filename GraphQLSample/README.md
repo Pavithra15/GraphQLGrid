@@ -11,10 +11,10 @@ Refer the following UG documenation for adding Syncfusion JavaScript component i
 
 ### Data Fetching
 
-In the above sample, we have added the `GraphQLAdaptor` which provides option to retrieve data from the GraphQL server. You can comunicate with the GraphQL server by adding the `query` property and define the response format using the `response.result` and `response.count` properties.
+In the sample, we have added the `GraphQLAdaptor` which provides option to retrieve data from the GraphQL server. You can comunicate with the GraphQL server by adding the `query` property and define the response format using the `response.result` and `response.count` properties.
 
 ```
-var data = new ej.data.DataManager({
+const data = new ej.data.DataManager({
     adaptor: new ej.data.GraphQLAdaptor({
       query: `query getOrders($datamanager: DataManager) {
               getOrders(datamanager: $datamanager) {
@@ -31,11 +31,60 @@ var data = new ej.data.DataManager({
 });
 ```
 
-Also we have enabled enabled the Paging, Filtering, Sorting and Grouping features in Grid component and while sending data fetching request, the query parameters will be send in a string format which contains the RequiresCounts, Skip, Take, Sorted, Where, Group details.
+We can add the above `data` to the Grid `dataSource` property.
+
+```
+ <GridComponent dataSource={data} allowPaging={true} allowFiltering={true} allowSorting={true} allowGrouping={true}
+       editSettings={{allowAdding:true, allowEditing:true, allowdeleting:true}} toolbar={["Add", "Edit", "Delete", "Update", "Cancel"]}>
+      <ColumnsDirective>
+        <ColumnDirective field='OrderID' headerText="Order ID" isPrimaryKey={true} width='100' textAlign="Right" />
+        <ColumnDirective field='CustomerID' headerText="Customer ID" width='100' />
+        <ColumnDirective field='ShipCountry' headerText="ShipCountry" width='100' />
+        <ColumnDirective field='EmployeeID' headerText="Employee ID" width='100' textAlign="Right" />
+      </ColumnsDirective>
+      <Inject services={[Filter, Page, Sort, Group, Edit, Toolbar]} />
+  </GridComponent>
+```
+
+Also, we have enabled enabled the Paging, Filtering, Sorting and Grouping features in Grid component and while sending data fetching request, the query parameters requiresCounts, skip, take, sorted, where and group details will be sent with the `variables`.
+
+![image](https://github.com/Pavithra15/GraphQLGrid/assets/34119270/6c6b4e69-eaa2-4c23-83be-530eba8f1bdd)
+
+This is the Schema for the parameters in GraphQL server.
+
+```
+input DataManager {
+    skip: Int
+    take: Int
+    sorted: [Sort]
+    group: [String]
+    where: String
+    requiresCounts: Boolean,
+}
+```
+
+And you can get these values in resolver, process the data and return teh response as `result` and `count` pair.
+
+```
+Query: {
+    getOrders: (parent, { datamanager }, context, info) => {
+       if (datamanager.sorted) {
+        // Perform sorting
+      }
+      if (datamanager.where) {
+        // Perform filtering
+      }
+      if (datamanager.skip && datamanager.take) {
+        // Perform Paging
+      }
+      return { result: data, count: data.length };
+    }
+  }
+```
 
 ### Performing CRUD operations
 
-You can perform the CRUD actions by returning the mutation queries inside the getMutation method based on the action.
+You can perform the CRUD actions by returning the mutation inside the getMutation method based on the action.
 
 ```
 var data = new ej.data.DataManager({
@@ -73,6 +122,21 @@ var data = new ej.data.DataManager({
   url: 'http://localhost:4200/'
 });
 ```
+
+## Run the client DataGrid application
+
+To run the client, you need to install the required pacakges using the below command
+
+```
+npm install
+```
+
+and run using
+
+```
+npm start
+```
+Now the Grid will be launched in the browser `http://localhost:3000/`.
 
 ## GraphQL Server setup
 
@@ -168,40 +232,6 @@ npm run dev
 ```
 
 Now the server will be hosted in the url `http://localhost:4200/` and we can communicate the GraphQL by assigning this url to the `dataManager.url` property.
-
-## Run the client Data Grid application
-
-Run the client side application by launcing the index.html file in your browser.
-
-## Behavior of Grid actions
-
-### Pagination
-
-While paging action, the skip and take values will be sent with the `variables` as number.
-
-![image](https://github.com/Pavithra15/GraphQLGrid/assets/34119270/2fa5459f-6593-4ac6-93c6-1ab68d4a6fbd)
-
-This is the Schema for skip and take parameters in GraphQL server.
-
-```
-input DataManager {
-    skip: Int
-    take: Int
-}
-```
-
-And you can get these values and process the data.
-
-```
-Query: {
-    getOrders: (parent, { datamanager }, context, info) => {     
-      if (datamanager.skip && datamanager.take) {
-        // Perform Paging
-      }
-      return { result: data, count: data.length };
-    }
-  }
-```
 
 ## Resources
 
